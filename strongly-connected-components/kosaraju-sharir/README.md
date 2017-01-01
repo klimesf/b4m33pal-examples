@@ -4,7 +4,7 @@
 - If the graph is represented as an adjacency list, then the algorithm runs in Theta(|V|+|E|) time (linear)
 - If the graph is represented as an adjacency matrix, then the algorithm runs in Big-O(|V|^2) time
 
-![Graph](images/graph.png)
+![Graph](_images/graph.png)
 
 ## Pseudocode
 
