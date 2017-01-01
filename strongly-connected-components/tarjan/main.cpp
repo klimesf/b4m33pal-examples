@@ -153,7 +153,7 @@ void find_scc(unsigned v, adjacency_list list) {
 int main() {
     adjacency_list list = matrix_to_list(adjacency_matrix);
 
-    for (int i = 0; i < NUMBER_OF_VERTICES; ++i) {
+    for (unsigned i = 0; i < NUMBER_OF_VERTICES; ++i) {
         if (v_index[i] == 0) {
             find_scc(i, list);
         }
