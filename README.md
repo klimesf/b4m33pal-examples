@@ -13,6 +13,6 @@ Collection of interesting algorithm implementations (C++) which are taught in B4
 
 ## Strongly connected components
 - [Kosaraju-Sharir algorithm](https://github.com/klimesf/b4m33pal-examples/tree/master/strongly-connected-components/kosaraju-sharir)
-- TODO: Tarjan's algorithm
+- [Tarjan's algorithm](https://github.com/klimesf/b4m33pal-examples/tree/master/strongly-connected-components/tarjan)
 
 ## TODO: Euler trail
