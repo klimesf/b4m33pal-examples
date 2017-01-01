@@ -12,7 +12,7 @@ Collection of interesting algorithm implementations (C++) which are taught in B4
 - [Prim's algorithm](https://github.com/klimesf/b4m33pal-examples/tree/master/prim)
 
 ## Strongly connected components
-- TODO: Kosaraju-Sharir algorithm
+- [Kosaraju-Sharir algorithm](https://github.com/klimesf/b4m33pal-examples/tree/master/kosaraju-sharir)
 - TODO: Tarjan's algorithm
 
 ## TODO: Euler trail

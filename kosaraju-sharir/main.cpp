@@ -24,8 +24,36 @@ using namespace std;
 #define OPEN 1
 #define CLOSED 2
 
+struct linked_list_element {
+    unsigned data;
+    linked_list_element *next;
+
+    void add(unsigned data) {
+        if (next != nullptr) {
+            next->add(data);
+            return;
+        }
+        next = new linked_list_element();
+        next->data = data;
+    }
+
+    linked_list_element() {
+        next = nullptr;
+    }
+
+    linked_list_element(unsigned data) : data(data) {
+        next = nullptr;
+    }
+
+    virtual ~linked_list_element() {
+        if (next != nullptr) {
+            delete next;
+        }
+    }
+};
+
 typedef unsigned matrix[NUMBER_OF_VERTICES][NUMBER_OF_VERTICES];
-typedef unsigned vector<unsigned> *adjacency_list;
+typedef linked_list_element **adjacency_list;
 typedef unsigned vertex_state[NUMBER_OF_VERTICES];
 
 matrix adjacency_matrix = {
@@ -40,42 +68,51 @@ matrix adjacency_matrix = {
         {0, 0, 0, 1, 0, 0, 1, 0}, // H
 };
 
-adjacency_list adjacency_matrix_to_list(matrix) {
-
-}
-
-void copy_matrix(matrix a, matrix &b) {
-    for (int i = 0; i < NUMBER_OF_VERTICES; ++i) {
-        for (int j = 0; j < NUMBER_OF_VERTICES; ++j) {
-            b[i][j] = a[i][j];
-        }
-    }
-}
-
-void swap_directions(matrix a, matrix &b) {
-    for (int i = 0; i < NUMBER_OF_VERTICES; ++i) {
-        for (int j = 0; j < NUMBER_OF_VERTICES; ++j) {
-            if (a[i][j] == 1 && a[j][i] == 0) {
-                b[i][j] = 0;
-                b[j][i] = 1;
+adjacency_list matrix_to_list(matrix adjacency_matrix) {
+    adjacency_list list = new linked_list_element *[NUMBER_OF_VERTICES];
+    for (unsigned i = 0; i < NUMBER_OF_VERTICES; ++i) {
+        list[i] = nullptr;
+        for (unsigned j = 0; j < NUMBER_OF_VERTICES; ++j) {
+            if (adjacency_matrix[i][j] == 1) {
+                if (list[i] == nullptr) {
+                    list[i] = new linked_list_element(j);
+                } else {
+                    list[i]->add(j);
+                }
             }
         }
     }
+    return list;
 }
 
-void dfs_walk(matrix adjacency_matrix,
-              unsigned index,
-              vertex_state &data,
-              stack<unsigned> &stack,
-              bool on_stack[NUMBER_OF_VERTICES],
-              bool push) {
-    data[index] = OPEN;
-    for (unsigned i = 0; i < NUMBER_OF_VERTICES; ++i) {
-        if (adjacency_matrix[index][i] == 1 && data[i] == UNVISITED) {
-            dfs_walk(adjacency_matrix, i, data, stack, on_stack, push);
+void swap_directions(adjacency_list a, adjacency_list &b) {
+    for (int i = 0; i < NUMBER_OF_VERTICES; ++i) {
+        linked_list_element *current = a[i];
+        while (current != nullptr) {
+            if (b[current->data] == nullptr) {
+                b[current->data] = new linked_list_element(i);
+            } else {
+                b[current->data]->add(i);
+            }
+            current = current->next;
         }
     }
-    data[index] = CLOSED;
+}
+
+void dfs_walk(adjacency_list list, unsigned index, vertex_state &state, stack<unsigned> &stack,
+              bool on_stack[NUMBER_OF_VERTICES], bool push) {
+
+    state[index] = OPEN;
+
+    linked_list_element *current = list[index];
+    while (current != nullptr) {
+        if (state[current->data] == UNVISITED) {
+            dfs_walk(list, current->data, state, stack, on_stack, push);
+        }
+        current = current->next;
+    }
+
+    state[index] = CLOSED;
     if (push) {
         on_stack[index] = true;
         stack.push(index);
@@ -84,7 +121,7 @@ void dfs_walk(matrix adjacency_matrix,
     }
 }
 
-void kosaraju_sharir(matrix adjacency_matrix) {
+void kosaraju_sharir(adjacency_list list) {
     stack<unsigned> stack;
     vertex_state state;
     bool on_stack[NUMBER_OF_VERTICES];
@@ -104,13 +141,16 @@ void kosaraju_sharir(matrix adjacency_matrix) {
                 break;
             }
         }
-        dfs_walk(adjacency_matrix, index, state, stack, on_stack, true);
+        dfs_walk(list, index, state, stack, on_stack, true);
     }
 
     // Swap directions of edges in graph
-    matrix swapped_matrix;
-    copy_matrix(adjacency_matrix, swapped_matrix);
-    swap_directions(adjacency_matrix, swapped_matrix);
+    adjacency_list swapped_list = new linked_list_element *[NUMBER_OF_VERTICES];
+    for (int j = 0; j < NUMBER_OF_VERTICES; ++j) {
+        swapped_list[j] = nullptr;
+    }
+
+    swap_directions(list, swapped_list);
     for (int i = 0; i < NUMBER_OF_VERTICES; ++i) {
         state[i] = UNVISITED;
     }
@@ -125,12 +165,16 @@ void kosaraju_sharir(matrix adjacency_matrix) {
         }
 
         cout << "Component " << counter++ << ":" << endl;
-        dfs_walk(swapped_matrix, index, state, stack, on_stack, false);
+        dfs_walk(swapped_list, index, state, stack, on_stack, false);
         cout << endl;
     }
+
+    delete[] swapped_list;
 }
 
 int main() {
-    kosaraju_sharir(adjacency_matrix);
+    adjacency_list list = matrix_to_list(adjacency_matrix);
+    kosaraju_sharir(list);
+    delete[] list;
     return 0;
 }
