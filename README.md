@@ -15,4 +15,7 @@ Collection of interesting algorithm implementations (C++) which are taught in B4
 - [Kosaraju-Sharir algorithm](https://github.com/klimesf/b4m33pal-examples/tree/master/strongly-connected-components/kosaraju-sharir)
 - [Tarjan's algorithm](https://github.com/klimesf/b4m33pal-examples/tree/master/strongly-connected-components/tarjan)
 
+## Prime numbers
+- [Sieve of eratosthenes](https://github.com/klimesf/b4m33pal-examples/tree/master/prime-numbers/sieve-of-eratosthenes)
+
 ## TODO: Euler trail
