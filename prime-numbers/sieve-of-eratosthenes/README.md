@@ -1,4 +1,4 @@
-# Sieve of eratosthenes implementation in C++
+# Sieve of Eratosthenes implementation in C++
 
 - Time complexity: O(n log log n)
 

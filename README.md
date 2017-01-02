@@ -16,6 +16,6 @@ Collection of interesting algorithm implementations (C++) which are taught in B4
 - [Tarjan's algorithm](https://github.com/klimesf/b4m33pal-examples/tree/master/strongly-connected-components/tarjan)
 
 ## Prime numbers
-- [Sieve of eratosthenes](https://github.com/klimesf/b4m33pal-examples/tree/master/prime-numbers/sieve-of-eratosthenes)
+- [Sieve of Eratosthenes](https://github.com/klimesf/b4m33pal-examples/tree/master/prime-numbers/sieve-of-eratosthenes)
 
 ## TODO: Euler trail
